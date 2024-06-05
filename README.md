@@ -12,9 +12,12 @@ For any technical support, please email at dev.kaamrul@gmail.com
 
 * __Step 1:__ Download SSLCommerz - Laravel Library from github. After download extract the library files. [Click Here](https://github.com/sslcommerz/SSLCommerz-Laravel)
 
+
 * __Step 2:__ Copy the `Library` folder and put it in the laravel project's `app/` directory. If needed, then run `composer dump -o`.
 
+
 * __Step 3:__ Copy the `config/sslcommerz.php` file into your project's `config/` folder.
+
 
 * __Step 4:__ Update `config/session.php` file into your project's `config/` folder.
 
@@ -47,6 +50,7 @@ protected $except = [
     '/place-order',
 ];
 ```
+
 
 * __Step 7:__ Now, let's create a  `PaymentController` inside your `app/Http/Controllers`  controller to handle payment requests. Run the following command to generate a new controller - 
 
@@ -127,6 +131,7 @@ class PaymentController extends Controller
 }
 ```
 
+
 * __Step 8:__ Handle Payment Callbacks in the `PaymentController.php`, define methods to handle payment success, fail, cancel and ipn callbacks - 
 
 ```php
@@ -172,6 +177,7 @@ public function ipn(Request $request)
 }
 ```
 
+
 * __Step 9:__ Create following route inside your `routes/web.php`  Ex - 
 
 ```php
@@ -187,67 +193,70 @@ import PaymentController into your `web.php` file also
 use App\Http\Controllers\PaymentController;
 ```
 
+
 * __Step 10:__ To Show sslcommerz gateway page inside a popup
 
     * To integrate it you need to have a `<button>` with following properties in your blade file -
-```php
-<button id="sslczPayBtn"
-    token="if you have any token validation"
-    postdata=""
-    order="If you already have the transaction generated for current order"
-    endpoint="/place-order"> Place Order
-</button>
-```
+        ```php
+        <button id="sslczPayBtn"
+            token="if you have any token validation"
+            postdata=""
+            order="If you already have the transaction generated for current order"
+            endpoint="/place-order"> Place Order
+        </button>
+        ```
 
     * Populate postdata obj as required -
-```php
-<script>
-    var obj = {};
-    obj.cus_name = $('#customer_name').val();
-    obj.cus_phone = $('#mobile').val();
-    obj.cus_email = $('#email').val();
-    obj.cus_addr1 = $('#address').val();
-    obj.amount = $('#total_amount').val();
-    $('#sslczPayBtn').prop('postdata', obj);
-</script
-```
+        ```php
+        <script>
+            var obj = {};
+            obj.cus_name = $('#customer_name').val();
+            obj.cus_phone = $('#mobile').val();
+            obj.cus_email = $('#email').val();
+            obj.cus_addr1 = $('#address').val();
+            obj.amount = $('#total_amount').val();
+            $('#sslczPayBtn').prop('postdata', obj);
+        </script
+        ```
 
     * Add following script -
         * Common Script
-```php
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+            ```php
+            <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+            integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+            
+            <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+            crossorigin="anonymous"></script>
+            ```
+        * For Sandbox
+            ```php
+            <script>
+                (function (window, document) {
+                    var loader = function () {
+                        var script = document.createElement("script"), tag = document.getElementsByTagName("script")[0];
+                        script.src = "https://sandbox.sslcommerz.com/embed.min.js?" + Math.random().toString(36).substring(7);
+                        tag.parentNode.insertBefore(script, tag);
+                    };
+                    window.addEventListener ? window.addEventListener("load", loader, false) : window.attachEvent("onload", loader);
+                })(window, document);
+            </script>
+            ```
+        * For Live
+            ```php
+            <script>
+                (function (window, document) {
+                    var loader = function () {
+                        var script = document.createElement("script"), tag = document.getElementsByTagName("script")[0];
+                        script.src = "https://seamless-epay.sslcommerz.com/embed.min.js?" + Math.random().toString(36).substring(7);
+                        tag.parentNode.insertBefore(script, tag);
+                    };
+                
+                    window.addEventListener ? window.addEventListener("load", loader, false) : window.attachEvent("onload", loader);
+                })(window, document);
+            </script>
+            ```
 
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
-integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
-crossorigin="anonymous"></script>
-```
-        * For Sandbox
-```php
-<script>
-    (function (window, document) {
-        var loader = function () {
-            var script = document.createElement("script"), tag = document.getElementsByTagName("script")[0];
-            script.src = "https://sandbox.sslcommerz.com/embed.min.js?" + Math.random().toString(36).substring(7);
-            tag.parentNode.insertBefore(script, tag);
-        };
-        window.addEventListener ? window.addEventListener("load", loader, false) : window.attachEvent("onload", loader);
-    })(window, document);
-</script>
-```
-        * For Sandbox
-```php
-<script>
-    (function (window, document) {
-        var loader = function () {
-            var script = document.createElement("script"), tag = document.getElementsByTagName("script")[0];
-            script.src = "https://sandbox.sslcommerz.com/embed.min.js?" + Math.random().toString(36).substring(7);
-            tag.parentNode.insertBefore(script, tag);
-        };
-        window.addEventListener ? window.addEventListener("load", loader, false) : window.attachEvent("onload", loader);
-    })(window, document);
-</script>
-```
 
 * __Step 11:__ Test Your Integration
 
