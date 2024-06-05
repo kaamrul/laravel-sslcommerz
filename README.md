@@ -1,18 +1,22 @@
-# Step by Step Guide to Integrating SSLCommerz Payment Gateway in PHP/Laravel Framework
+## Step by Step Guide to Integrating SSLCommerz Payment Gateway in PHP/Laravel Framework
+
+```
+For any technical support, please email at dev.kaamrul@gmail.com
+```
 
 ![1707763000403](https://github.com/kaamrul/laravel-sslcommerz/assets/37633219/918daf7d-3375-4f53-8988-1ec738433667)
 
 
-## Installation
+### Instructions:
 
 
-### Step 1: Download SSLCommerz - Laravel Library from github. After download extract the library files. [Click Here](https://github.com/sslcommerz/SSLCommerz-Laravel)
+* __Step 1:__ Download SSLCommerz - Laravel Library from github. After download extract the library files. [Click Here](https://github.com/sslcommerz/SSLCommerz-Laravel)
 
-### Step 2: Copy the Library folder and put it in the laravel project's app/ directory. If needed, then run composer dump -o.
+* __Step 2:__ Copy the `Library` folder and put it in the laravel project's `app/` directory. If needed, then run `composer dump -o`.
 
-### Step 3: Copy the config/sslcommerz.php file into your project's config/ folder.
+* __Step 3:__ Copy the `config/sslcommerz.php` file into your project's `config/` folder.
 
-### Step 4: Update config/session.php file into your project's config/ folder.
+* __Step 4:__ Update `config/session.php` file into your project's `config/` folder.
 
 ```bash
 'secure' => env('SESSION_SECURE_COOKIE'), to 'secure' => env('SESSION_SECURE_COOKIE', true), 
@@ -21,9 +25,9 @@
 ```
 
 
-### Step 5: Configure SSLCommerz Credentials inside .env file add 3 key-value pairs
+* __Step 5:__ Configure SSLCommerz Credentials inside `.env` file add 3 key-value pairs
 
-```
+```php
 SSLCZ_STORE_ID=<your store id>
 SSLCZ_STORE_PASSWORD=<your store password>
 SSLCZ_TESTMODE=true // set false when using live store id
@@ -32,9 +36,9 @@ For development purposes, you can obtain sandbox 'Store ID' and 'Store Password'
 by registering at https://developer.sslcommerz.com/registration/
 
 
-###  Step 6: Add exceptions for VerifyCsrfToken middleware accordingly (you actual routes) Like this - 
+* __Step 6:__ Add exceptions for `VerifyCsrfToken` middleware accordingly (you actual routes) Like this - 
 
-```bash
+```php
 protected $except = [
     '/success',
     '/cancel',
@@ -44,14 +48,14 @@ protected $except = [
 ];
 ```
 
-###  Step 7: Now, let's create a  PaymentController inside your app/Http/Controllers  controller to handle payment requests. Run the following command to generate a new controller - 
+* __Step 7:__ Now, let's create a  `PaymentController` inside your `app/Http/Controllers`  controller to handle payment requests. Run the following command to generate a new controller - 
 
 ```bash
 php artisan make:controller PaymentController
 ```
-Open the PaymentController.php file located in app/Http/Controllers directory and add the following method - 
+Open the `PaymentController.php` file located in `app/Http/Controllers` directory and add the following method - 
 
-```bash
+```php
 <?php
 namespace App\Http\Controllers;
 use Illuminate\Http\Request;
@@ -123,9 +127,9 @@ class PaymentController extends Controller
 }
 ```
 
-###  Step 8: Handle Payment Callbacks in the PaymentController, define methods to handle payment success, fail, cancel and ipn callbacks - 
+* __Step 8:__ Handle Payment Callbacks in the `PaymentController.php`, define methods to handle payment success, fail, cancel and ipn callbacks - 
 
-```bash
+```php
 public function success(Request $request)
 {
       $tran_id = $request->input('tran_id');
@@ -168,25 +172,25 @@ public function ipn(Request $request)
 }
 ```
 
-###  Step 9: Create following route inside your routes/web.php  Ex - 
+* __Step 9:__ Create following route inside your `routes/web.php`  Ex - 
 
-```bash
+```php
 Route::post('/place-order', [PaymentController::class, 'placeOrder']);
 Route::post('/success', [PaymentController::class, 'success']);
 Route::post('/fail', [PaymentController::class, 'fail']);
 Route::post('/cancel', [PaymentController::class, 'cancel']);
 Route::post('/ipn', [PaymentController::class, 'ipn']);
 ```
-import PaymentController into your web.php file also
 
-```bash
+import PaymentController into your `web.php` file also
+```php
 use App\Http\Controllers\PaymentController;
 ```
 
-###  Step 10: To Show sslcommerz gateway page inside a popup
+* __Step 10:__ To Show sslcommerz gateway page inside a popup
 
-To integrate it you need to have a <button> with following properties in your blade file -
-```bash
+    * To integrate it you need to have a `<button>` with following properties in your blade file -
+```php
 <button id="sslczPayBtn"
     token="if you have any token validation"
     postdata=""
@@ -195,8 +199,8 @@ To integrate it you need to have a <button> with following properties in your bl
 </button>
 ```
 
-Populate postdata obj as required -
-```bash
+    * Populate postdata obj as required -
+```php
 <script>
     var obj = {};
     obj.cus_name = $('#customer_name').val();
@@ -208,9 +212,9 @@ Populate postdata obj as required -
 </script
 ```
 
-Add following script -
-#### Common Script
-```bash
+    * Add following script -
+        * Common Script
+```php
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
 integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
@@ -218,8 +222,8 @@ integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw
 integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
 crossorigin="anonymous"></script>
 ```
-#### For Sandbox
-```bash
+        * For Sandbox
+```php
 <script>
     (function (window, document) {
         var loader = function () {
@@ -231,8 +235,8 @@ crossorigin="anonymous"></script>
     })(window, document);
 </script>
 ```
-#### For Sandbox
-```bash
+        * For Sandbox
+```php
 <script>
     (function (window, document) {
         var loader = function () {
@@ -245,12 +249,12 @@ crossorigin="anonymous"></script>
 </script>
 ```
 
-### Step 11: Test Your Integration
+* __Step 11:__ Test Your Integration
 
 By following these steps, you can securely process online payments and enhance the functionality of your Laravel-based e-commerce platform or web application. 
 
 
-## License
+### License
 
 This repository is licensed under the [MIT License](http://opensource.org/licenses/MIT).
 
